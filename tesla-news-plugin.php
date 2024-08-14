@@ -54,16 +54,19 @@ function tnp_display_news($atts)
 {
     $options = get_option('tnp_options');
     $api_key = '03de599cfda844c99a9594b9049e8350';
-    $request_url = "https://newsapi.org/v2/everything?q=tesla&from=2024-07-12&sortBy=publishedAt&apiKey=$api_key";
+    $current_date = date('Y-d-m');
+    $request_url = "https://newsapi.org/v2/everything?q=tesla&from=$current_date&sortBy=publishedAt&apiKey=$api_key";
 
     $response = wp_remote_get(
         $request_url,
         array(
             'headers' => array(
-                'User-Agent' => 'Tesla News Plugin/1.0 (kibet.metto@gmail.com.)'
-            )
+                'User-Agent' => 'Tesla News Plugin/1.0 (kibet.metto@gmail.com)'
+            ),
+            'timeout' => 20
         )
     );
+
 
     if (is_wp_error($response)) {
         return '<p>Error: ' . esc_html($response->get_error_message()) . '</p>';
